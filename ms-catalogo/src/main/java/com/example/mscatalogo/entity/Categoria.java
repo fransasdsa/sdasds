@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Categoria {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     private String nombre;
 
