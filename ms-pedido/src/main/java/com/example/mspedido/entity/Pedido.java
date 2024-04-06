@@ -1,9 +1,9 @@
 package com.example.mspedido.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -13,4 +13,7 @@ public class Pedido {
     @GeneratedValue
     private Integer id;
     private String pedido;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<PedidoDetalle> pedidoDetalle;
 }
