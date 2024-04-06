@@ -11,26 +11,26 @@ import java.util.Optional;
 
 @Service
 public class CategoriaServiceImpl implements CategoriaService {
+
     @Autowired
     private CategoriaRepository categoriaRepository;
     @Override
-    public List<Categoria> lista() {
+    public List<Categoria> listar() {
         return categoriaRepository.findAll();
     }
-
     @Override
     public Categoria guardar(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
 
     @Override
-    public Optional<Categoria> listarPorid(Integer id) {
-        return categoriaRepository.findById(id);
+    public Categoria actualizar(Categoria categoria) {
+        return categoriaRepository.save(categoria);
     }
 
     @Override
-    public Categoria actualizar(Categoria categoria) {
-        return categoriaRepository.save(categoria);
+    public Optional<Categoria> listaPorld(Integer id) {
+        return categoriaRepository.findById(id);
     }
 
     @Override
