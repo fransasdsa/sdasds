@@ -1,6 +1,10 @@
 package com.example.mspedido.service.Impl;
 
+import com.example.mspedido.dto.ClienteDto;
 import com.example.mspedido.entity.Pedido;
+import com.example.mspedido.entity.PedidoDetalle;
+import com.example.mspedido.feign.CatalogoFeign;
+import com.example.mspedido.feign.ClienteFeign;
 import com.example.mspedido.repository.PedidoRepository;
 import com.example.mspedido.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,10 @@ import java.util.Optional;
 public class PedidoServiceImpl implements PedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
+    @Autowired
+    private ClienteFeign clienteFeign;
+    @Autowired
+    private CatalogoFeign catalogoFeign;
     @Override
     public List<Pedido> lista() {
         return pedidoRepository.findAll();
@@ -25,6 +33,14 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     public Optional<Pedido> listarPorid(Integer id) {
+        Optional<Pedido> pedido = pedidoRepository.findById(id);
+        ClienteDto clienteDto = clienteFeign.buscarPorId(pedido.get().getClienteId()).getBody();
+        List<PedidoDetalle> pedidoDetalles = pedido.get().getDetalle().stream().map(pedidoDetalle -> {
+            pedidoDetalle.setProductoDto(catalogoFeign.listaPorld(pedidoDetalle.getProductoId()).getBody());
+            return pedidoDetalle;
+        }).toList();
+        pedido.get().setClienteDto(clienteDto);
+        pedido.get().setDetalle(pedidoDetalles);
         return pedidoRepository.findById(id);
     }
 

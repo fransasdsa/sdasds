@@ -1,5 +1,6 @@
 package com.example.mspedido.entity;
 
+import com.example.mspedido.dto.ProductoDto;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,14 +9,16 @@ import lombok.Data;
 
 public class PedidoDetalle {
     @Id
-    @GeneratedValue
-    private String detalle;
-    private String Producto;
-    private String fecha;
-    private Integer cantidad;
-    private double precio;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Double cantidad;
+    private Double precio;
+    private Integer productoId;
+    public PedidoDetalle() {
+        this.cantidad = (double) 0;
+        this.precio = (double) 0;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "pedido_id")
-    private Pedido pedido;
+    @Transient
+    private ProductoDto productoDto;
 }
